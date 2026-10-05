@@ -1,0 +1,58 @@
+---
+title: "Travel Tune - Personalized Travel Destination Recommendation System"
+author: "SRI VAISHNAVI S"
+date: "2026-09-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(forcats)
+
+travel_data <- read.csv("travel_data.csv")
+travel_data <- na.omit(travel_data)
+
+head(travel_data)
+str(travel_data)
+summary(travel_data)
+```
+
+## Phase 2: 5 Visualizations
+
+```{r}
+# 1. Travel Style
+ggplot(travel_data, aes(x = TravelStyle, fill = TravelStyle)) +
+  geom_bar() +
+  geom_text(stat='count', aes(label=..count..), vjust=-0.5) +
+  labs(title = "Travel Style Preference Distribution") +
+  theme_minimal()
+
+# 2. Cost Distribution
+ggplot(travel_data, aes(x = Cost)) +
+  geom_histogram(bins = 20, fill = "steelblue", color = "white") +
+  labs(title = "Cost Distribution", x = "Cost (INR)", y = "Count") +
+  theme_minimal()
+
+# 3. Rating Distribution
+ggplot(travel_data, aes(x = factor(Rating), fill = factor(Rating))) +
+  geom_bar() +
+  labs(title = "Rating Distribution (1-5)", x = "Rating", y = "Count") +
+  theme_minimal()
+
+# 4. Cost vs Rating
+ggplot(travel_data, aes(x = Cost, y = Rating, color = TravelStyle)) +
+  geom_point(size = 3, alpha = 0.7) +
+  labs(title = "Cost vs Rating (colored by Travel Style)", x = "Cost (INR)", y = "Rating") +
+  theme_minimal()
+
+# 5. Destination Frequency
+ggplot(travel_data, aes(x = fct_infreq(Destination))) +
+  geom_bar(fill = "tomato") +
+  coord_flip() +
+  labs(title = "Destination Frequency", x = "Destination", y = "Count") +
+  theme_minimal()
